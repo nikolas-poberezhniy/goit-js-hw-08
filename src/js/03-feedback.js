@@ -19,7 +19,7 @@ if (localStorage.getItem('feedback-form-state')) {
 
   if (message) {
     messageInput.value = message;
-    formData.message = message;
+    formData.message = email;
   }
 }
 
@@ -32,7 +32,7 @@ form.addEventListener(
   'input',
   throttle(e => {
     onTextInput(e);
-  }, 250)
+  }, 500)
 );
 
 form.addEventListener('submit', onFormSubmit);
