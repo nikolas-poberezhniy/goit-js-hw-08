@@ -11,8 +11,16 @@ if (localStorage.getItem('feedback-form-state')) {
   const { email, message } = JSON.parse(
     localStorage.getItem('feedback-form-state')
   );
-  emailInput.value = email;
-  messageInput.value = message;
+
+  if (email) {
+    emailInput.value = email;
+    formData.email = email;
+  }
+
+  if (message) {
+    messageInput.value = message;
+    formData.message = message;
+  }
 }
 
 function onTextInput(e) {
@@ -24,7 +32,7 @@ form.addEventListener(
   'input',
   throttle(e => {
     onTextInput(e);
-  }, 500)
+  }, 250)
 );
 
 form.addEventListener('submit', onFormSubmit);
