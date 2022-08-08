@@ -3,25 +3,24 @@ import throttle from 'lodash.throttle';
 const form = document.querySelector('.feedback-form');
 const emailInput = form.querySelector('[name = email]');
 const messageInput = form.querySelector('[name = message]');
-
+const STORAGE_KEY = 'feedback-form-state';
 let formData = {};
 
 //Заполняем поля из кеша, если есть
-if (localStorage.getItem('feedback-form-state')) {
-  const { email, message } = JSON.parse(
-    localStorage.getItem('feedback-form-state')
-  );
+function getSavedData() {
+  const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
 
-  if (email) {
-    emailInput.value = email;
-    formData.email = email;
-  }
-
-  if (message) {
-    messageInput.value = message;
-    formData.message = email;
+  if (data) {
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        form.querySelector(`[name = ${key}]`).value = data[key] || '';
+        formData[key] = data[key];
+      }
+    }
   }
 }
+
+getSavedData();
 
 function onTextInput(e) {
   formData[e.target.name] = e.target.value;
