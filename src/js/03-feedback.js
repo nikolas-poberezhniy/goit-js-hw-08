@@ -13,7 +13,7 @@ function getSavedData() {
   if (data) {
     for (const key in data) {
       if (data.hasOwnProperty(key)) {
-        form.querySelector(`[name = ${key}]`).value = data[key] || '';
+        form.elements[key].value = data[key] || '';
         formData[key] = data[key];
       }
     }
@@ -24,7 +24,7 @@ getSavedData();
 
 function onTextInput(e) {
   formData[e.target.name] = e.target.value;
-  localStorage.setItem('feedback-form-state', JSON.stringify(formData));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
 }
 
 form.addEventListener(
@@ -38,13 +38,23 @@ form.addEventListener('submit', onFormSubmit);
 
 function onFormSubmit(e) {
   e.preventDefault();
-  if (emailInput.value && messageInput.value) {
-    //если оба поля полные
+
+  let a = e.currentTarget.elements;
+  let flag = true;
+
+  for (b of a) {
+    if (b.nodeName === 'INPUT' || b.nodeName === 'TEXTAREA') {
+      if (!b.value) {
+        flag = false;
+        alert(`Fill field ${b.name}`);
+        break;
+      }
+    }
+  }
+  if (flag) {
     console.log(formData);
-    localStorage.removeItem('feedback-form-state');
-
-    form.reset();
-
-    for (const string in formData) delete formData[string]; //очищаем от элементов объект formData
+    localStorage.removeItem(STORAGE_KEY);
+    e.currentTarget.reset();
+    formData = {};
   }
 }
