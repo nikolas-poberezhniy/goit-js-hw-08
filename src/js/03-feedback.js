@@ -44,8 +44,10 @@ function onFormSubmit(e) {
 
   for (b of a) {
     if (b.nodeName === 'INPUT' || b.nodeName === 'TEXTAREA') {
+      //проверяем тестовое ли поле (чтобы не кнопка или что-либо еще)
       if (!b.value) {
-        flag = false;
+        //если поле пустое
+        flag = false; //не даст submit форме сделать в следующем if()
         alert(`Fill field ${b.name}`);
         break;
       }
